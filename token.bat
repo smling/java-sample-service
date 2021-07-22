@@ -1,0 +1,1 @@
+aws codeartifact get-authorization-token --domain d-sg-2 --domain-owner 440509023570 --query authorizationToken --output text > token

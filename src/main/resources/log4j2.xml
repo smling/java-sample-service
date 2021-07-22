@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+    <Properties>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level --- [%t] %logger{36} - %msg%n</Property>
+        <Property name="LOG_FILE_NAME">sample-service</Property>
+        <Property name="LOG_PATH">c:\log\sample-service</Property>
+    </Properties>
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTERN}" />
+        </Console>
+        <RollingFile
+                name="rollingFile"
+                fileName="${LOG_PATH}/${LOG_FILE_NAME}.log"
+                filePattern="${LOG_PATH}/${LOG_FILE_NAME}.%d{dd-MMM}.log.gz"
+                ignoreExceptions="false">
+            <PatternLayout pattern="${LOG_PATTERN}" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+            </Policies>
+            <DefaultRolloverStrategy max="5" />
+        </RollingFile>
+        <Socket name="socket" host="tms-elk01-sg.dev.bbpos.com" port="19724" protocol="TCP">
+            <JsonLayout properties="true" compact="true" eventEol="true" />
+            <PatternLayout pattern="${LOG_PATTERN}" />
+        </Socket>
+        <Async name="async">
+            <AppenderRef ref="console" />
+            <AppenderRef ref="rollingFile" />
+            <AppenderRef ref="socket" />
+        </Async>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="async" />
+        </Root>
+    </Loggers>
+</Configuration>

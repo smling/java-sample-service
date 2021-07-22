@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-service-{{ECR_VERSION_NUMBER}}
+  namespace: tms
+  labels:
+    app: sample-service
+  annotations:
+    prometheus.io/scrape: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample-service
+  template:
+    metadata:
+      labels:
+        app: sample-service
+        version: "{{ECR_VERSION_NUMBER}}"
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/actuator/prometheus"
+    spec:
+      volumes:
+        - name: efs
+          persistentVolumeClaim:
+            claimName: tms-efs-claim
+      containers:
+        - name: sample-service
+          image: 440509023570.dkr.ecr.ap-southeast-1.amazonaws.com/sample-service:{{ECR_VERSION_NUMBER}}
+          env:
+            - name: UID
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.uid
+            - name: AWS_CONFIG_FILE
+              value: /mnt/sample-service-uat/conf/config
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: aws-profile-l2-remote
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aws-profile-l2-remote
+                  key: AWS_SECRET_ACCESS_KEY
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 2
+            failureThreshold: 1
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 300
+            periodSeconds: 3
+            failureThreshold: 2
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: efs
+              mountPath: "/mnt"
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: 1
+            limits:
+              memory: "1Gi"
+              cpu: 1

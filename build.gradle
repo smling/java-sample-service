@@ -1,0 +1,102 @@
+plugins {
+	id 'org.springframework.boot' version '2.5.2'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+	id 'maven-publish'
+	id 'jacoco'
+	id "org.sonarqube" version "3.0"
+}
+
+ext {
+	packageGroup = 'com.bbpos.tms2'
+	artifact='smaple.service'
+	packageName = 'sample.service'
+	packageVersion = '0.0.1'
+
+	// AWS CodeArtifact authentication token.
+	token=new File("token").exists()? new File("token").text: null
+}
+
+group "${packageGroup}"
+version "${packageVersion}"
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	maven {
+		url 'https://d-sg-2-440509023570.d.codeartifact.ap-southeast-1.amazonaws.com/maven/d-sg-ca-maven-repo/'
+		credentials {
+			username "aws"
+			password token != null ? token : System.env.CODEARTIFACT_AUTH_TOKEN
+		}
+	}
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			groupId="${packageGroup}"
+			artifactId="${packageName}"
+			version="${packageVersion}"
+			from components.java
+		}
+	}
+	repositories {
+		maven {
+			url 'https://d-sg-2-440509023570.d.codeartifact.ap-southeast-1.amazonaws.com/maven/d-sg-ca-repo/'
+			credentials {
+				username "aws"
+				password token != null ? token : System.env.CODEARTIFACT_AUTH_TOKEN
+			}
+		}
+	}
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+	implementation 'org.springdoc:springdoc-openapi-ui:1+'
+	implementation 'org.springdoc:springdoc-openapi-webmvc-core:1+'
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	runtimeOnly 'mysql:mysql-connector-java'
+
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+configurations {
+	all {
+		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+	}
+}
+
+test {
+	useJUnitPlatform()
+	jacoco {
+		destinationFile = file("${buildDir}/reports/jacoco/jacoco.exec")
+	}
+}
+jacocoTestReport {
+	reports {
+		xml.enabled true
+		html.destination file("${buildDir}/reports/jacoco/jacocoHtml")
+	}
+}
+sonarqube {
+	properties {
+		property "sonar.sourceEncoding", "UTF-8"
+	}
+}
+jacoco {
+	reportsDir file("${buildDir}/reports/jacoco")
+}

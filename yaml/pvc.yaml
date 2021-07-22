@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tms-efs-claim
+  namespace: tms
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: efs-sc-tms
+  resources:
+    requests:
+      storage: 5Gi
