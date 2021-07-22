@@ -6,7 +6,7 @@ It includes basic project folder structure, sample controller, DockerFile and re
 
 # Initial Settings
 1. Global replace `sample-service` and `sample.service` to service name you needed;
-2. Update connection string in `application.properties`;
+2. Update connection string, application name and description in `application.properties`;
 3. Update `log4j2.xml` settings;
 
 # Build And Debug
@@ -18,6 +18,46 @@ gradlew clean build
 
 ## Run unit test.
 gradlew test
+```
+
+# Project Structure
+```text
+├───docker
+├───src
+│   ├───main
+│   │   ├───java
+│   │   │   └───com
+│   │   │       └───bbpos
+│   │   │           └───tms2
+│   │   │               └───services
+│   │   │                   └───sample
+│   │   │                       ├───configuration		## Ben configurations.
+│   │   │                       ├───data
+│   │   │                       │   ├───dao				## JPA entities.
+│   │   │                       │   └───repositories	## JPA repositories.
+│   │   │                       ├───exceptions			## Service specific excetions.
+│   │   │                       ├───services			## Service implementation on business logic.
+│   │   │                       └───v1
+│   │   │                           ├───controllers		## API Endpoint.
+│   │   │                           └───dto				## API object response to client.
+│   │   ├───resources
+│   │   └───scripts
+│   │       ├───batch
+│   │       └───sql
+│   └───test
+│       └───java
+│           └───com
+│               └───bbpos
+│                   └───tms2
+│                       └───services
+│                           └───sample
+│                               └───v1
+│                                   └───controllers
+└───yaml
+    ├───prod
+    ├───stag
+    └───uat
+
 ```
 
 # Employed Libraries
