@@ -8,6 +8,7 @@ It includes basic project folder structure, sample controller, DockerFile and re
 1. Global replace `sample-service` and `sample.service` to service name you needed;
 2. Update connection string, application name and description in `application.properties`;
 3. Update `log4j2.xml` settings;
+4. After files added in directory, `.gitkeep` can be removed;
 
 # Build And Debug
 ```shell
@@ -57,7 +58,6 @@ gradlew test
     ├───prod
     ├───stag
     └───uat
-
 ```
 
 # Employed Libraries
