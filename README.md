@@ -9,6 +9,17 @@ It includes basic project folder structure, sample controller, DockerFile and re
 2. Update connection string in `application.properties`;
 3. Update `log4j2.xml` settings;
 
+# Build And Debug
+```shell
+## Using gradle wrapper to elminate dependency in local computer.
+
+## Build project.
+gradlew clean build
+
+## Run unit test.
+gradlew test
+```
+
 # Employed Libraries
 |Library|Usage|
 |------|-----|
