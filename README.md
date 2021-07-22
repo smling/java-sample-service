@@ -12,7 +12,7 @@ It includes basic project folder structure, sample controller, DockerFile and re
 
 # Build And Debug
 ```shell
-## Using gradle wrapper to elminate dependency in local computer.
+## Using gradle wrapper to eliminate dependency in local computer.
 
 ## Build project.
 gradlew clean build
