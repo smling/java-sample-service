@@ -4,11 +4,12 @@ Default Java service project template to standardize project creation.
 
 It includes basic project folder structure, sample controller, DockerFile and related K8S YAMLs.
 
-# Initial Settings
-1. Global replace `sample-service` and `sample.service` to service name you needed;
-2. Update connection string, application name and description in `application.properties`;
-3. Update `log4j2.xml` settings;
-4. After files added in directory, `.gitkeep` can be removed;
+# Initial Setup
+1. Global replace `sample-service`, `sample.service` to service name you needed;
+2. Global replace `services.sample` to `services.[service name]` for updating namespace;   
+3. Update connection string, application name and description in `application.properties`;
+4. Update `log4j2.xml` settings;
+5. After files added in directory, `.gitkeep` can be removed;
 
 # Build And Debug
 ```shell
