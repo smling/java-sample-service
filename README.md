@@ -10,6 +10,7 @@ It includes basic project folder structure, sample controller, DockerFile and re
 3. Update connection string, application name and description in `application.properties`;
 4. Update `log4j2.xml` settings;
 5. After files added in directory, `.gitkeep` can be removed;
+6. Update this file content to align with implemented service;
 
 # Build And Debug
 ```shell
@@ -20,45 +21,12 @@ gradlew clean build
 
 ## Run unit test.
 gradlew test
-```
 
-# Project Structure
-```text
-├───docker
-├───src
-│   ├───main
-│   │   ├───java
-│   │   │   └───com
-│   │   │       └───bbpos
-│   │   │           └───tms2
-│   │   │               └───services
-│   │   │                   └───sample
-│   │   │                       ├───configuration		## Ben configurations.
-│   │   │                       ├───data
-│   │   │                       │   ├───dao				## JPA entities.
-│   │   │                       │   └───repositories	## JPA repositories.
-│   │   │                       ├───exceptions			## Service specific excetions.
-│   │   │                       ├───services			## Service implementation on business logic.
-│   │   │                       └───v1
-│   │   │                           ├───controllers		## API Endpoint.
-│   │   │                           └───dto				## API object response to client.
-│   │   ├───resources
-│   │   └───scripts
-│   │       ├───batch
-│   │       └───sql
-│   └───test
-│       └───java
-│           └───com
-│               └───bbpos
-│                   └───tms2
-│                       └───services
-│                           └───sample
-│                               └───v1
-│                                   └───controllers
-└───yaml
-    ├───prod
-    ├───stag
-    └───uat
+## Generate JavaDoc.
+gradlew javadoc
+
+## Combine everything in single shot for local testing before push.
+gradlew clean build test javadoc
 ```
 
 # Employed Libraries
