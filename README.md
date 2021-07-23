@@ -13,21 +13,7 @@ It includes basic project folder structure, sample controller, DockerFile and re
 6. Update this file content to align with implemented service;
 
 # Build And Debug
-```shell
-## Using gradle wrapper to eliminate dependency in local computer.
-
-## Build project.
-gradlew clean build
-
-## Run unit test.
-gradlew test
-
-## Generate JavaDoc.
-gradlew javadoc
-
-## Combine everything in single shot for local testing before push.
-gradlew clean build test javadoc
-```
+See snippet [Build and Debug](https://bbpos.me/tms/devops/java-service-template/-/snippets/4) for more details.
 
 # Employed Libraries
 |Library|Usage|
