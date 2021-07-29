@@ -20,7 +20,7 @@
             </Policies>
             <DefaultRolloverStrategy max="5" />
         </RollingFile>
-        <Socket name="socket" host="tms-elk01-sg.dev.bbpos.com" port="19724" protocol="TCP">
+        <Socket name="socket" host="tms-elk01-sg.dev.bbpos.com" port="19722" protocol="TCP">
             <JsonLayout properties="true" compact="true" eventEol="true" />
             <PatternLayout pattern="${LOG_PATTERN}" />
         </Socket>

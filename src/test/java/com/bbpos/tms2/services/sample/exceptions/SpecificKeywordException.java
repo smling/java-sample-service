@@ -1,6 +1,5 @@
 package com.bbpos.tms2.services.sample.exceptions;
 
-import io.swagger.v3.oas.models.OpenAPI;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -18,9 +17,7 @@ class SpecificKeywordExceptionTest {
                 Assertions.assertNotNull(exception);
             });
         } else {
-            Assertions.assertThrows(Exception.class, () -> {
-                new SpecificKeywordException(message);
-            });
+            Assertions.assertThrows(Exception.class, () -> new SpecificKeywordException(message));
         }
     }
 
