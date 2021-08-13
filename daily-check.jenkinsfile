@@ -43,34 +43,38 @@ pipeline {
     		    }
             }
         }
-        stage('Code Review') {
-            steps {
-                withSonarQubeEnv(installationName: 'sonarqube-server') { // You can override the credential to be used
-                    withCredentials([string(credentialsId: 'SonarQubeToken', variable: 'TOKEN')]) {
-                        script {
-                            sh """
-                            ${getCodeArtifactTokenCommand}
-                            ${tool 'gradle-7.0.2'}/gradle test jacocoTestReport sonarqube -Dsonar.login=$TOKEN -Dsonar.java.source=1.8
-                            """
+        stage('Code Analysis') {
+            parallel {
+                stage('Code Review') {
+                    steps {
+                        withSonarQubeEnv(installationName: 'sonarqube-server') { // You can override the credential to be used
+                            withCredentials([string(credentialsId: 'SonarQubeToken', variable: 'TOKEN')]) {
+                                script {
+                                    sh """
+                                    ${getCodeArtifactTokenCommand}
+                                    ${tool 'gradle-7.0.2'}/gradle test jacocoTestReport sonarqube -Dsonar.login=$TOKEN -Dsonar.java.source=1.8
+                                    """
+                                }
+                            }
                         }
+                        jacoco(
+                            execPattern: '**/jacoco.exec',
+                            classPattern: '**/build/classes',
+                            sourcePattern: '**/src',
+                            inclusionPattern: '**/*.class,**/*.java'
+                        )
                     }
                 }
-                jacoco(
-                    execPattern: '**/jacoco.exec',
-                    classPattern: '**/build/classes',
-                    sourcePattern: '**/src',
-                    inclusionPattern: '**/*.class,**/*.java'
-                )
-            }
-        }
-        stage('Dependency Check Report') {
-            steps {
-                dependencyCheck additionalArguments: '''
-                    -o "./"
-                    -s "./"
-                    -f "ALL"
-                    --prettyPrint''', odcInstallation: 'dependency-check-6.0.3'
-                dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+                stage('Dependency Check Report') {
+                    steps {
+                        dependencyCheck additionalArguments: '''
+                            -o "./"
+                            -s "./"
+                            -f "ALL"
+                            --prettyPrint''', odcInstallation: 'dependency-check-6.0.3'
+                        dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+                    }
+                }
             }
         }
     }
