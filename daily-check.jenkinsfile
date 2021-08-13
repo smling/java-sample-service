@@ -42,7 +42,7 @@ pipeline {
 				}
             }
         }
-        stage('Code Analysis')
+        stage('Code Analysis') {
             parallel {
                 stage('Code Review') {
                     steps {
@@ -98,6 +98,5 @@ pipeline {
                     message:"Job ${env.JOB_NAME} failure. Build no: ${env.BUILD_NUMBER} (<${env.BUILD_URL}>); Git Repo: ${GIT_REPO_SSH_URL}",
                     status: "Error"
         }
-
     }
 }
