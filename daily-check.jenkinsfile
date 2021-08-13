@@ -42,46 +42,48 @@ pipeline {
 				}
             }
         }
-        parallel {
-            stage('Code Review') {
-                steps {
-                    dir("${GIT_PROJECT_DIR}") {
-                        withSonarQubeEnv(installationName: 'sonarqube-server') { // You can override the credential to be used
-                            withCredentials([string(credentialsId: 'SonarQubeToken', variable: 'TOKEN')]) {
-                                script {
-            			            codeScanCommand=""
-            				        switch(BUILD_PROJECT_TYPE.toUpperCase()) {
-                                        case "GRADLE":
-                                            codeScanCommand="${tool 'gradle-6.7.1'}/gradle test jacocoTestReport sonarqube -Dsonar.login=$TOKEN -Dsonar.java.source=1.8"
-                                            break;
-                                        case "MAVEN":
-                                            codeScanCommand="mvn sonar:sonar -Dsonar.login=$TOKEN -Dsonar.java.source=1.8"
-                                            break;
+        stage('Code Analysis')
+            parallel {
+                stage('Code Review') {
+                    steps {
+                        dir("${GIT_PROJECT_DIR}") {
+                            withSonarQubeEnv(installationName: 'sonarqube-server') { // You can override the credential to be used
+                                withCredentials([string(credentialsId: 'SonarQubeToken', variable: 'TOKEN')]) {
+                                    script {
+                                        codeScanCommand=""
+                                        switch(BUILD_PROJECT_TYPE.toUpperCase()) {
+                                            case "GRADLE":
+                                                codeScanCommand="${tool 'gradle-6.7.1'}/gradle test jacocoTestReport sonarqube -Dsonar.login=$TOKEN -Dsonar.java.source=1.8"
+                                                break;
+                                            case "MAVEN":
+                                                codeScanCommand="mvn sonar:sonar -Dsonar.login=$TOKEN -Dsonar.java.source=1.8"
+                                                break;
+                                        }
+                                        sh """
+                                        ${getCodeArtifactTokenCommand}
+                                        ${codeScanCommand}
+                                        """
                                     }
-                                    sh """
-                                    ${getCodeArtifactTokenCommand}
-                                    ${codeScanCommand}
-                                    """
-            			        }
+                                }
                             }
                         }
+                        jacoco(
+                            execPattern: '**/jacoco.exec',
+                            classPattern: '**/build/classes',
+                            sourcePattern: '**/src',
+                            inclusionPattern: '**/*.class,**/*.java'
+                        )
                     }
-                    jacoco(
-            			execPattern: '**/jacoco.exec',
-            			classPattern: '**/build/classes',
-            			sourcePattern: '**/src',
-            			inclusionPattern: '**/*.class,**/*.java'
-            		)
                 }
-            }
-            stage('Dependency Check Report') {
-            	steps {
-            		dependencyCheck additionalArguments: '''
-                        -o "./"
-                        -s "./"
-                        -f "ALL"
-                        --prettyPrint''', odcInstallation: 'dependency-check-6.0.3'
-                    dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+                stage('Dependency Check Report') {
+                    steps {
+                        dependencyCheck additionalArguments: '''
+                            -o "./"
+                            -s "./"
+                            -f "ALL"
+                            --prettyPrint''', odcInstallation: 'dependency-check-6.0.3'
+                        dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+                    }
                 }
             }
         }
