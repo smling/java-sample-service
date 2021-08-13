@@ -1,0 +1,101 @@
+pipeline {
+    agent any
+    stages {
+        stage('Initial') {
+            steps {
+                getCodeArtifactTokenCommand="export CODEARTIFACT_AUTH_TOKEN=`${AWS_CLI_HOME}bin/aws codeartifact get-authorization-token --domain d-sg-2 --domain-owner 440509023570 --query authorizationToken --output text`"
+                sh """
+                ${getCodeArtifactTokenCommand}
+                """
+            }
+        }
+        stage('Build') {
+            steps {
+                dir("${GIT_PROJECT_DIR}") {
+                    withEnv(["JAVA_HOME=${ tool 'jdk_11.0.11.0.9-1.el7_9' }"]) {
+                        configFileProvider([configFile(fileId: "${GLOBAL_MAVEN_CONFIG_ID}", variable: 'MAVEN_SETTINGS')]) {
+                            script {
+                                buildCommand="${tool 'gradle-6.7.1'}/gradle clean build -x test javadoc"
+                                sh """
+                                ${buildCommand}
+                                """
+                            }
+                        }
+                        javadoc (
+                           javadocDir:"build/docs/javadoc/",
+                           keepAll: true
+                        )
+                    }
+                }
+            }
+        }
+		stage('Unit Test') {
+			steps {
+				dir("${GIT_PROJECT_DIR}") {
+    		        script {
+        		        unitTestCommand="${tool 'gradle-6.7.1'}/gradle test"
+                        sh """
+                        ${unitTestCommand}
+                        """
+                        junit "build/test-results/test/*.xml"
+    		        }
+				}
+            }
+        }
+        parallel {
+            stage('Code Review') {
+                steps {
+                    dir("${GIT_PROJECT_DIR}") {
+                        withSonarQubeEnv(installationName: 'sonarqube-server') { // You can override the credential to be used
+                            withCredentials([string(credentialsId: 'SonarQubeToken', variable: 'TOKEN')]) {
+                                script {
+            			            codeScanCommand=""
+            				        switch(BUILD_PROJECT_TYPE.toUpperCase()) {
+                                        case "GRADLE":
+                                            codeScanCommand="${tool 'gradle-6.7.1'}/gradle test jacocoTestReport sonarqube -Dsonar.login=$TOKEN -Dsonar.java.source=1.8"
+                                            break;
+                                        case "MAVEN":
+                                            codeScanCommand="mvn sonar:sonar -Dsonar.login=$TOKEN -Dsonar.java.source=1.8"
+                                            break;
+                                    }
+                                    sh """
+                                    ${getCodeArtifactTokenCommand}
+                                    ${codeScanCommand}
+                                    """
+            			        }
+                            }
+                        }
+                    }
+                    jacoco(
+            			execPattern: '**/jacoco.exec',
+            			classPattern: '**/build/classes',
+            			sourcePattern: '**/src',
+            			inclusionPattern: '**/*.class,**/*.java'
+            		)
+                }
+            }
+            stage('Dependency Check Report') {
+            	steps {
+            		dependencyCheck additionalArguments: '''
+                        -o "./"
+                        -s "./"
+                        -f "ALL"
+                        --prettyPrint''', odcInstallation: 'dependency-check-6.0.3'
+                    dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+                }
+            }
+        }
+    }
+    post {
+        always {
+            //archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
+            cleanWs()
+        }
+        failure {
+            office365ConnectorSend webhookUrl: "${OFFICE_365_WEBHOOK}",
+                    message:"Job ${env.JOB_NAME} failure. Build no: ${env.BUILD_NUMBER} (<${env.BUILD_URL}>); Git Repo: ${GIT_REPO_SSH_URL}",
+                    status: "Error"
+        }
+
+    }
+}
