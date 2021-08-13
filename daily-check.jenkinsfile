@@ -13,21 +13,19 @@ pipeline {
         }
         stage('Build') {
             steps {
-                dir("${GIT_PROJECT_DIR}") {
-                    withEnv(["JAVA_HOME=${ tool 'jdk_11.0.11.0.9-1.el7_9' }"]) {
-                        configFileProvider([configFile(fileId: "${GLOBAL_MAVEN_CONFIG_ID}", variable: 'MAVEN_SETTINGS')]) {
-                            script {
-                                buildCommand="${tool 'gradle-6.7.1'}/gradle clean build -x test javadoc"
-                                sh """
-                                ${buildCommand}
-                                """
-                            }
+                withEnv(["JAVA_HOME=${ tool 'jdk_11.0.11.0.9-1.el7_9' }"]) {
+                    configFileProvider([configFile(fileId: "${GLOBAL_MAVEN_CONFIG_ID}", variable: 'MAVEN_SETTINGS')]) {
+                        script {
+                            buildCommand="${tool 'gradle-6.7.1'}/gradle clean build -x test javadoc"
+                            sh """
+                            ${buildCommand}
+                            """
                         }
-                        javadoc (
-                           javadocDir:"build/docs/javadoc/",
-                           keepAll: true
-                        )
                     }
+                    javadoc (
+                       javadocDir:"build/docs/javadoc/",
+                       keepAll: true
+                    )
                 }
             }
         }
