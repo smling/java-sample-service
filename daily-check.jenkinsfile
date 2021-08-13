@@ -3,7 +3,9 @@ pipeline {
     stages {
         stage('Initial') {
             steps {
-                getCodeArtifactTokenCommand="export CODEARTIFACT_AUTH_TOKEN=`${AWS_CLI_HOME}bin/aws codeartifact get-authorization-token --domain d-sg-2 --domain-owner 440509023570 --query authorizationToken --output text`"
+                script { 
+                    getCodeArtifactTokenCommand="export CODEARTIFACT_AUTH_TOKEN=`${AWS_CLI_HOME}bin/aws codeartifact get-authorization-token --domain d-sg-2 --domain-owner 440509023570 --query authorizationToken --output text`"
+                }
                 sh """
                 ${getCodeArtifactTokenCommand}
                 """
