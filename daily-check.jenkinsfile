@@ -30,16 +30,14 @@ pipeline {
         }
 		stage('Unit Test') {
 			steps {
-				dir("${GIT_PROJECT_DIR}") {
-    		        script {
-        		        unitTestCommand="${tool 'gradle-7.0.2'}/gradle test"
-                        sh """
-                        ${getCodeArtifactTokenCommand}
-                        ${unitTestCommand}
-                        """
-                        junit "build/test-results/test/*.xml"
-    		        }
-				}
+    		    script {
+        		    unitTestCommand="${tool 'gradle-7.0.2'}/gradle test"
+                    sh """
+                    ${getCodeArtifactTokenCommand}
+                    ${unitTestCommand}
+                    """
+                    junit "build/test-results/test/*.xml"
+    		    }
             }
         }
         stage('Code Analysis') {
