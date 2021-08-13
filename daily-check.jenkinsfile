@@ -34,6 +34,7 @@ pipeline {
     		        script {
         		        unitTestCommand="${tool 'gradle-7.0.2'}/gradle test"
                         sh """
+                        ${getCodeArtifactTokenCommand}
                         ${unitTestCommand}
                         """
                         junit "build/test-results/test/*.xml"
