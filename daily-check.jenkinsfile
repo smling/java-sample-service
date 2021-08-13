@@ -18,9 +18,8 @@ pipeline {
             steps {
                 withEnv(["JAVA_HOME=${ tool 'jdk_11.0.11.0.9-1.el7_9' }"]) {
                     script {
-                        buildCommand="${tool 'gradle-6.7.1'}/gradlew clean build -x test javadoc"
                         sh """
-                        ${buildCommand}
+                        gradlew clean build -x test javadoc
                         """
                     }
                     javadoc (
@@ -34,9 +33,8 @@ pipeline {
 			steps {
 				dir("${GIT_PROJECT_DIR}") {
     		        script {
-        		        unitTestCommand="${tool 'gradle-6.7.1'}/gradle test"
                         sh """
-                        ${unitTestCommand}
+                        gradlew test
                         """
                         junit "build/test-results/test/*.xml"
     		        }
@@ -51,18 +49,8 @@ pipeline {
                             withSonarQubeEnv(installationName: 'sonarqube-server') { // You can override the credential to be used
                                 withCredentials([string(credentialsId: 'SonarQubeToken', variable: 'TOKEN')]) {
                                     script {
-                                        codeScanCommand=""
-                                        switch(BUILD_PROJECT_TYPE.toUpperCase()) {
-                                            case "GRADLE":
-                                                codeScanCommand="${tool 'gradle-6.7.1'}/gradle test jacocoTestReport sonarqube -Dsonar.login=$TOKEN -Dsonar.java.source=1.8"
-                                                break;
-                                            case "MAVEN":
-                                                codeScanCommand="mvn sonar:sonar -Dsonar.login=$TOKEN -Dsonar.java.source=1.8"
-                                                break;
-                                        }
                                         sh """
-                                        ${getCodeArtifactTokenCommand}
-                                        ${codeScanCommand}
+                                        gradle test jacocoTestReport sonarqube -Dsonar.login=$TOKEN -Dsonar.java.source=1.8
                                         """
                                     }
                                 }
