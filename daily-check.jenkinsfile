@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    triggers {
+        cron('H H(0-7) * * *')
+    }
     stages {
         stage('Initial') {
             steps {
@@ -15,7 +18,7 @@ pipeline {
             steps {
                 withEnv(["JAVA_HOME=${ tool 'jdk_11.0.11.0.9-1.el7_9' }"]) {
                     script {
-                        buildCommand="${tool 'gradle-6.7.1'}/gradle clean build -x test javadoc"
+                        buildCommand="${tool 'gradle-6.7.1'}/gradlew clean build -x test javadoc"
                         sh """
                         ${buildCommand}
                         """
