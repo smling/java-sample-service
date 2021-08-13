@@ -50,7 +50,7 @@ pipeline {
                         script {
                             sh """
                             ${getCodeArtifactTokenCommand}
-                            ${tool 'gradle-7.0.2'}/gradle test jacocoTestReport sonarqube -Dsonar.login=$TOKEN -Dsonar.java.source=1.8"
+                            ${tool 'gradle-7.0.2'}/gradle test jacocoTestReport sonarqube -Dsonar.login=$TOKEN -Dsonar.java.source=1.8
                             """
                         }
                     }
