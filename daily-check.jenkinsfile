@@ -19,7 +19,7 @@ pipeline {
                 withEnv(["JAVA_HOME=${ tool 'jdk_11.0.11.0.9-1.el7_9' }"]) {
                     script {
                         sh """
-                        gradlew clean build -x test javadoc
+                        ./gradlew clean build -x test javadoc
                         """
                     }
                     javadoc (
@@ -34,7 +34,7 @@ pipeline {
 				dir("${GIT_PROJECT_DIR}") {
     		        script {
                         sh """
-                        gradlew test
+                        ./gradlew test
                         """
                         junit "build/test-results/test/*.xml"
     		        }
@@ -50,7 +50,7 @@ pipeline {
                                 withCredentials([string(credentialsId: 'SonarQubeToken', variable: 'TOKEN')]) {
                                     script {
                                         sh """
-                                        gradle test jacocoTestReport sonarqube -Dsonar.login=$TOKEN -Dsonar.java.source=1.8
+                                        ./gradlew test jacocoTestReport sonarqube -Dsonar.login=$TOKEN -Dsonar.java.source=1.8
                                         """
                                     }
                                 }
