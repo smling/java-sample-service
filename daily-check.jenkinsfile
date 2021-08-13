@@ -14,13 +14,11 @@ pipeline {
         stage('Build') {
             steps {
                 withEnv(["JAVA_HOME=${ tool 'jdk_11.0.11.0.9-1.el7_9' }"]) {
-                    configFileProvider([configFile(fileId: "${GLOBAL_MAVEN_CONFIG_ID}", variable: 'MAVEN_SETTINGS')]) {
-                        script {
-                            buildCommand="${tool 'gradle-6.7.1'}/gradle clean build -x test javadoc"
-                            sh """
-                            ${buildCommand}
-                            """
-                        }
+                    script {
+                        buildCommand="${tool 'gradle-6.7.1'}/gradle clean build -x test javadoc"
+                        sh """
+                        ${buildCommand}
+                        """
                     }
                     javadoc (
                        javadocDir:"build/docs/javadoc/",
@@ -95,7 +93,7 @@ pipeline {
         }
         failure {
             office365ConnectorSend webhookUrl: "${OFFICE_365_WEBHOOK}",
-                    message:"Job ${env.JOB_NAME} failure. Build no: ${env.BUILD_NUMBER} (<${env.BUILD_URL}>); Git Repo: ${GIT_REPO_SSH_URL}",
+                    message:"Job ${env.JOB_NAME} failure. Build no: ${env.BUILD_NUMBER} (<${env.BUILD_URL}>);",
                     status: "Error"
         }
     }
