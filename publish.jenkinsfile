@@ -7,7 +7,7 @@ pipeline {
         stage('Initial Settings') {
             steps {
                 script {
-                    serviceName="Java Sample Service Template"
+                    serviceName="sample-service"
                     targetVersion = '0.0.1'
                     properties([
                         parameters([
