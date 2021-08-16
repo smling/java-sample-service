@@ -1,0 +1,57 @@
+pipeline {
+    agent any
+    options {
+        buildDiscarder logRotator(numToKeepStr: '7')
+    }
+    stages {
+        stage('Initial Settings') {
+            steps {
+                script {
+                    properties([
+                        parameters([
+                            choice(
+                                choices: ['JMeter', 'Postman', 'None'],
+                                name: 'TEST_TOOL',
+                                defaultValue: 'none'
+                            ),
+                            string(
+                                defaultValue: '1.1.0',
+                                name: 'BUILD_VERSION_NUMBER',
+                                trim: true
+                            )
+                        ])
+                    ])
+                    currentBranch = GIT_BRANCH
+                    echo "${currentBranch}"
+                    targetEnvironment = "uat"
+                    switch(currentBranch) {
+                        case "development"
+                            targetEnvironment = "uat"
+                        break
+                        case "master", "main" {
+                            // Change value to production.
+                            targetEnvironment = "uat"
+                            //targetEnvironment = "prod"
+                        }
+                    }
+                }
+            }
+        }
+        stage('Call EKS Pipeline') {
+            steps {
+                build job: "Shared Pipelines/build-docker-image-deploy-EKS-pipeline", parameters: [
+                    string(name:"PROJECT_NAME", value:"resource-signing-administration-service"),
+                    string(name:"GIT_REPO_SSH_URL", value:"git@bbpos.me:tms/resource-signing-administration-service.git"),
+                    string(name:"GIT_BRANCH_NAME", value: "${currentBranch}"),
+                    string(name:"JAVA_VERSION", value:"11"),
+                    string(name:"BUILD_PROJECT_TYPE", value:"Gradle_7_0_2"),
+                    string(name:"BUILD_VERSION_NUMBER", value: "${BUILD_VERSION_NUMBER}"),
+                    string(name:"ENVIRONMENT", value: "${targetEnvironment}"),
+                    string(name:"ECR_VERSION_NUMBER", value: "${ECR_VERSION_NUMBER}"),
+                    string(name:"TARGET_HOSTNAME", value:"https://k8s-tms-tmsuatek-394b6a40f4-689150941.ap-southeast-1.elb.amazonaws.com/resource-signing-administration-service"),
+                    string(name:"TEST_TOOL", value:"${TEST_TOOL}"),
+                ]
+            }
+        }
+    }
+}
