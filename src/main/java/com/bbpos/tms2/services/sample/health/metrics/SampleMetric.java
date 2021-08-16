@@ -3,6 +3,7 @@ package com.bbpos.tms2.services.sample.health.metrics;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
@@ -14,6 +15,7 @@ public class SampleMetric {
     }
 
     public void updateValue(int value) {
-        this.value.set(value);
+        if(Objects.nonNull(this.value))
+            this.value.set(value);
     }
 }

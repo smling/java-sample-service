@@ -15,6 +15,8 @@ class SpecificKeywordExceptionTest {
             Assertions.assertDoesNotThrow(() -> {
                 SpecificKeywordException exception = new SpecificKeywordException(message);
                 Assertions.assertNotNull(exception);
+                SpecificKeywordException exceptionWithInnerException = new SpecificKeywordException(message, new RuntimeException());
+                Assertions.assertNotNull(exceptionWithInnerException);
             });
         } else {
             Assertions.assertThrows(Exception.class, () -> new SpecificKeywordException(message));

@@ -6,18 +6,12 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.springframework.boot.info.BuildProperties;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.stream.Stream;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class OpenApiConfigurationTest {
-
-    @MockBean
-    BuildProperties buildProperties;
-
-    private final OpenApiConfiguration openApiConfiguration=new OpenApiConfiguration(buildProperties);
+    private final OpenApiConfiguration openApiConfiguration=new OpenApiConfiguration(null);
 
     @ParameterizedTest()
     @MethodSource("echoTestSuccessData")

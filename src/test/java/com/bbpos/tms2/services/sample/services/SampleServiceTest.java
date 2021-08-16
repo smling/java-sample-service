@@ -1,6 +1,7 @@
 package com.bbpos.tms2.services.sample.services;
 
 import com.bbpos.tms2.libs.web.v1.dto.CommandResponse;
+import com.bbpos.tms2.services.sample.exceptions.SpecificKeywordException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
@@ -24,16 +25,28 @@ class SampleServiceTest {
 
     @ParameterizedTest()
     @MethodSource("echoTestSuccessData")
-    void echoTest(String value) {
+    void echoTestSuccess(String value) {
         Assertions.assertDoesNotThrow(()-> {
             CommandResponse response = normalService.echo(value);
             Assertions.assertTrue(Objects.nonNull(response));
         });
     }
 
+    @ParameterizedTest()
+    @MethodSource("echoTestFailureData")
+    void echoTestFailure(String value) {
+        Assertions.assertThrows(SpecificKeywordException.class, ()-> normalService.echo(value));
+    }
+
     static Stream<Arguments> echoTestSuccessData() {
         return Stream.of(
                 Arguments.arguments("test message"), Arguments.arguments("")
+        );
+    }
+
+    static Stream<Arguments> echoTestFailureData() {
+        return Stream.of(
+                Arguments.arguments("hello")
         );
     }
 }

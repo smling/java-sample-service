@@ -4,6 +4,7 @@ import com.bbpos.tms2.libs.web.v1.dto.BaseResponse;
 import com.bbpos.tms2.services.sample.services.SampleService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -21,6 +22,14 @@ class SampleControllerTest {
     @BeforeAll
     void beforeAll() {
         normalController = new SampleController(new SampleService(mockedRequest));
+    }
+
+    @Test
+    void constructorTest() {
+        Assertions.assertAll(()-> Assertions.assertDoesNotThrow(()-> {
+            SampleController sampleController = new SampleController(new SampleService(mockedRequest));
+            Assertions.assertNotNull(sampleController);
+        }));
     }
 
     @ParameterizedTest()
