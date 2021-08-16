@@ -7,6 +7,7 @@ pipeline {
         stage('Initial Settings') {
             steps {
                 script {
+                    serviceName="Java Sample Service Template"
                     properties([
                         parameters([
                             choice(
@@ -27,6 +28,7 @@ pipeline {
                         ])
                     ])
                     currentBranch = GIT_BRANCH
+                    currentRepositoryPath = sh(returnStdout: true, script: 'git config remote.origin.url').trim()
                     echo "${currentBranch}"
                     targetEnvironment = "uat"
                     switch(currentBranch) {
@@ -45,8 +47,8 @@ pipeline {
         stage('Call EKS Pipeline') {
             steps {
                 build job: "Shared Pipelines/build-docker-image-deploy-EKS-pipeline", parameters: [
-                    string(name:"PROJECT_NAME", value:"resource-signing-administration-service"),
-                    string(name:"GIT_REPO_SSH_URL", value:"git@bbpos.me:tms/resource-signing-administration-service.git"),
+                    string(name:"PROJECT_NAME", value:"${serviceName}"),
+                    string(name:"GIT_REPO_SSH_URL", value:"${currentRepositoryPath}"),
                     string(name:"GIT_BRANCH_NAME", value: "${currentBranch}"),
                     string(name:"JAVA_VERSION", value:"11"),
                     string(name:"BUILD_PROJECT_TYPE", value:"Gradle_7_0_2"),
