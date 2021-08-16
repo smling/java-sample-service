@@ -25,14 +25,14 @@ pipeline {
                     echo "${currentBranch}"
                     targetEnvironment = "uat"
                     switch(currentBranch) {
-                        case "development"
+                        case "development":
                             targetEnvironment = "uat"
                         break
-                        case "master", "main" {
+                        case "master", "main":
                             // Change value to production.
                             targetEnvironment = "uat"
                             //targetEnvironment = "prod"
-                        }
+                        break
                     }
                 }
             }
