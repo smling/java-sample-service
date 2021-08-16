@@ -8,14 +8,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class SampleMetric {
-    private final AtomicInteger value;
+    private AtomicInteger value;
 
     public SampleMetric(MeterRegistry meterRegistry) {
         value=meterRegistry.gauge("sample.metric", new AtomicInteger());
     }
 
     public void updateValue(int value) {
-        if(Objects.nonNull(this.value))
-            this.value.set(value);
+        if(Objects.isNull(this.value))
+            this.value = new AtomicInteger();
+        this.value.set(value);
     }
 }
