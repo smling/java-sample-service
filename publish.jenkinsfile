@@ -28,7 +28,7 @@ pipeline {
                         case "development":
                             targetEnvironment = "uat"
                         break
-                        case "master", "main":
+                        case ["master","main"]:
                             // Change value to production.
                             targetEnvironment = "uat"
                             //targetEnvironment = "prod"
