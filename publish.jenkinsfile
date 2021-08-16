@@ -8,6 +8,7 @@ pipeline {
             steps {
                 script {
                     serviceName="Java Sample Service Template"
+                    targetVersion = '0.0.1'
                     properties([
                         parameters([
                             choice(
@@ -16,12 +17,12 @@ pipeline {
                                 defaultValue: 'none'
                             ),
                             string(
-                                defaultValue: '1.1.0',
+                                defaultValue: "${targetVersion}",
                                 name: 'BUILD_VERSION_NUMBER',
                                 trim: true
                             ),
                             string(
-                                defaultValue: '1.1.0',
+                                defaultValue: "${targetVersion}",
                                 name: 'ECR_VERSION_NUMBER',
                                 trim: true
                             )
