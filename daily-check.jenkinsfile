@@ -3,6 +3,9 @@ pipeline {
     triggers {
         cron('H */4 * * 1-5')
     }
+    options {
+        buildDiscarder logRotator(numToKeepStr: '7')
+    }
     stages {
         stage('Initial') {
             steps {
