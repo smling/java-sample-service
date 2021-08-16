@@ -4,7 +4,6 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.annotation.Bean;
@@ -14,8 +13,11 @@ import java.util.Objects;
 
 @Configuration
 public class OpenApiConfiguration {
-    @Autowired(required = false)
-    private BuildProperties buildProperties;
+    private final BuildProperties buildProperties;
+
+    public OpenApiConfiguration(BuildProperties buildProperties) {
+        this.buildProperties = buildProperties;
+    }
 
     @Bean
     public OpenAPI customOpenAPI(@Value("${application-name}") String appName,

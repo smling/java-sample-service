@@ -1,9 +1,6 @@
 package com.bbpos.tms2.services.sample.exceptions;
 
 import com.bbpos.tms2.libs.web.exceptions.BaseWebServiceRuntimeException;
-import com.bbpos.tms2.libs.web.exceptions.NullParameterException;
-
-import java.util.Objects;
 
 /**
  * Specific keyword exception.

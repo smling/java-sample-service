@@ -83,6 +83,10 @@ configurations {
 	}
 }
 
+springBoot {
+	buildInfo()
+}
+
 test {
 	useJUnitPlatform()
 	jacoco {

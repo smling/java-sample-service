@@ -1,4 +1,4 @@
-rootProject.name = 'sample'
+rootProject.name = 'sample.service'
 exec {
     boolean isDev = System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')
     if(isDev){
