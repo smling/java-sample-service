@@ -1,9 +1,8 @@
 package com.bbpos.tms2.services.sample.health.metrics;
 
-import com.bbpos.tms2.services.sample.exceptions.SpecificKeywordException;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -20,8 +19,8 @@ class SampleMetricTest {
     @Mock
     MeterRegistry meterRegistry;
 
-    @BeforeAll
-    void beforeAll() {
+    @BeforeEach
+    void beforeEach() {
         MockitoAnnotations.openMocks(this);
         sampleMetric = new SampleMetric(meterRegistry);
     }

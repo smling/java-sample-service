@@ -3,7 +3,7 @@ package com.bbpos.tms2.services.sample.handlers;
 import com.bbpos.tms2.libs.web.exceptions.BaseWebServiceRuntimeException;
 import com.bbpos.tms2.services.sample.exceptions.SpecificKeywordException;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -21,8 +21,8 @@ class ServiceExceptionHandlerTest {
 
     private ServiceExceptionHandler serviceExceptionHandler;
 
-    @BeforeAll
-    void beforeAll() {
+    @BeforeEach
+    void beforeEach() {
         MockitoAnnotations.openMocks(this);
         serviceExceptionHandler = new ServiceExceptionHandler();
     }
