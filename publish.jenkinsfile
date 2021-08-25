@@ -25,6 +25,11 @@ pipeline {
                                 defaultValue: "${targetVersion}",
                                 name: 'ECR_VERSION_NUMBER',
                                 trim: true
+                            ),
+                            string(
+                                defaultValue: "580",
+                                name: 'GITLAB_PROJECT_ID',
+                                trim: true
                             )
                         ])
                     ])
@@ -45,20 +50,37 @@ pipeline {
                 }
             }
         }
-        stage('Call EKS Pipeline') {
+//         stage('Call EKS Pipeline') {
+//             steps {
+//                 build job: "Shared Pipelines/build-docker-image-deploy-EKS-pipeline", parameters: [
+//                     string(name:"PROJECT_NAME", value:"${serviceName}"),
+//                     string(name:"GIT_REPO_SSH_URL", value:"${currentRepositoryPath}"),
+//                     string(name:"GIT_BRANCH_NAME", value: "${currentBranch}"),
+//                     string(name:"JAVA_VERSION", value:"11"),
+//                     string(name:"BUILD_PROJECT_TYPE", value:"Gradle_7_0_2"),
+//                     string(name:"BUILD_VERSION_NUMBER", value: "${params.BUILD_VERSION_NUMBER}"),
+//                     string(name:"ENVIRONMENT", value: "${targetEnvironment}"),
+//                     string(name:"ECR_VERSION_NUMBER", value: "${params.ECR_VERSION_NUMBER}"),
+//                     string(name:"TARGET_HOSTNAME", value:"https://k8s-tms-tmsuatek-394b6a40f4-689150941.ap-southeast-1.elb.amazonaws.com/resource-signing-administration-service"),
+//                     string(name:"TEST_TOOL", value:"${TEST_TOOL}"),
+//                 ]
+//             }
+//         }
+        stage('Create tag and release') {
             steps {
-                build job: "Shared Pipelines/build-docker-image-deploy-EKS-pipeline", parameters: [
-                    string(name:"PROJECT_NAME", value:"${serviceName}"),
-                    string(name:"GIT_REPO_SSH_URL", value:"${currentRepositoryPath}"),
-                    string(name:"GIT_BRANCH_NAME", value: "${currentBranch}"),
-                    string(name:"JAVA_VERSION", value:"11"),
-                    string(name:"BUILD_PROJECT_TYPE", value:"Gradle_7_0_2"),
-                    string(name:"BUILD_VERSION_NUMBER", value: "${params.BUILD_VERSION_NUMBER}"),
-                    string(name:"ENVIRONMENT", value: "${targetEnvironment}"),
-                    string(name:"ECR_VERSION_NUMBER", value: "${params.ECR_VERSION_NUMBER}"),
-                    string(name:"TARGET_HOSTNAME", value:"https://k8s-tms-tmsuatek-394b6a40f4-689150941.ap-southeast-1.elb.amazonaws.com/resource-signing-administration-service"),
-                    string(name:"TEST_TOOL", value:"${TEST_TOOL}"),
-                ]
+                withCredentials([string(credentialsId: 'app-jenkins', variable: 'TOKEN')]) {
+                    script {
+                        tagName = "v"+targetVersion
+                        releaseName = "master/"+tagName
+                        releaseDescription = currentBuild.description
+                        releaseParameter = '{ "name": "${releaseName}", "tag_name": "${tagName}", "description": "${releaseDescription}" }'
+                        sh """
+
+                           git tag ${tagName}
+                           curl --header "PRIVATE-TOKEN: ${TOKEN}" --request POST "https://bbpos.me/api/v4/projects/${GITLAB_PROJECT_ID}/releases"
+                        """
+                    }
+                }
             }
         }
     }
