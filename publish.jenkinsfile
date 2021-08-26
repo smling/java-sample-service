@@ -69,7 +69,7 @@ pipeline {
         stage('Create tag and release') {
             steps {
                 script {
-                    tagName = "v"+targetVersion
+                    tagName = "v"+BUILD_VERSION_NUMBER
                     releaseName = "master/"+tagName
                     releaseDescription = currentBuild.description
                     releaseParameter = "{ 'name': '${releaseName}', 'tag_name': '${tagName}', 'description': '${releaseDescription}' }"
