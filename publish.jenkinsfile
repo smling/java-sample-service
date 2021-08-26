@@ -16,12 +16,10 @@ pipeline {
                                 name: 'TEST_TOOL'
                             ),
                             string(
-                                defaultValue: "${targetVersion}",
                                 name: 'BUILD_VERSION_NUMBER',
                                 trim: true
                             ),
                             string(
-                                defaultValue: "${targetVersion}",
                                 name: 'ECR_VERSION_NUMBER',
                                 trim: true
                             ),
