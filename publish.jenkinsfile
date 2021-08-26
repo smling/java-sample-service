@@ -75,9 +75,8 @@ pipeline {
                         releaseDescription = currentBuild.description
                         releaseParameter = '{ "name": "${releaseName}", "tag_name": "${tagName}", "description": "${releaseDescription}" }'
                         sh """
-
                            git tag ${tagName}
-                           curl --header "PRIVATE-TOKEN: ${TOKEN}" --request POST "https://bbpos.me/api/v4/projects/${GITLAB_PROJECT_ID}/releases"
+                           curl --header "PRIVATE-TOKEN: ${TOKEN}" --request POST "https://bbpos.me/api/v4/projects/${GITLAB_PROJECT_ID}/releases" --data ${releaseParameter}
                         """
                     }
                 }
