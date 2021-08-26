@@ -76,8 +76,8 @@ pipeline {
                     echo "release parameter: ${releaseParameter}"
                     sh """
                        git tag ${tagName} -m '${tagName}'
-                       curl --request POST "https://bbpos.me/api/v4/projects/${GITLAB_PROJECT_ID}/releases" --data ${releaseParameter}
                        git push
+                       curl --request POST "https://bbpos.me/api/v4/projects/${GITLAB_PROJECT_ID}/releases" --data ${releaseParameter}
                     """
                 }
             }
