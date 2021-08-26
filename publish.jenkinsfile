@@ -8,7 +8,7 @@ pipeline {
             steps {
                 script {
                     serviceName="sample-service"
-                    targetVersion = '0.0.1'
+                    targetVersion = '0.0.2'
                     properties([
                         parameters([
                             choice(
