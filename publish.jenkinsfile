@@ -66,17 +66,15 @@ pipeline {
 //         }
         stage('Create tag and release') {
             steps {
-                withCredentials([string(credentialsId: 'app-jenkins', variable: 'TOKEN')]) {
-                    script {
-                        tagName = "v"+targetVersion
-                        releaseName = "master/"+tagName
-                        releaseDescription = currentBuild.description
-                        releaseParameter = '{ "name": "${releaseName}", "tag_name": "${tagName}", "description": "${releaseDescription}" }'
-                        sh """
-                           git tag ${tagName}
-                           curl --header "PRIVATE-TOKEN: ${TOKEN}" --request POST "https://bbpos.me/api/v4/projects/${GITLAB_PROJECT_ID}/releases" --data ${releaseParameter}
-                        """
-                    }
+                script {
+                    tagName = "v"+targetVersion
+                    releaseName = "master/"+tagName
+                    releaseDescription = currentBuild.description
+                    releaseParameter = '{ "name": "${releaseName}", "tag_name": "${tagName}", "description": "${releaseDescription}" }'
+                    sh """
+                       git tag ${tagName}
+                       curl --request POST "https://bbpos.me/api/v4/projects/${GITLAB_PROJECT_ID}/releases" --data ${releaseParameter}
+                    """
                 }
             }
         }
