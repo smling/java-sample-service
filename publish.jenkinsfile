@@ -9,13 +9,11 @@ pipeline {
                 script {
                     serviceName="sample-service"
                     targetVersion = '0.0.1'
-                    gitLabProjectId = 580
                     properties([
                         parameters([
                             choice(
                                 choices: ['JMeter', 'Postman', 'None'],
-                                name: 'TEST_TOOL',
-                                defaultValue: 'None'
+                                name: 'TEST_TOOL'
                             ),
                             string(
                                 defaultValue: "${targetVersion}",
@@ -26,10 +24,14 @@ pipeline {
                                 defaultValue: "${targetVersion}",
                                 name: 'ECR_VERSION_NUMBER',
                                 trim: true
+                            ),
+                            string(
+                                defaultValue: "580",
+                                name: 'GITLAB_PROJECT_ID',
+                                trim: true
                             )
                         ])
                     ])
-
                     currentBranch = GIT_BRANCH
                     currentRepositoryPath = sh(returnStdout: true, script: 'git config remote.origin.url').trim()
                     echo "Current repo : ${currentRepositoryPath}"
@@ -74,7 +76,7 @@ pipeline {
                         releaseParameter = '{ "name": "${releaseName}", "tag_name": "${tagName}", "description": "${releaseDescription}" }'
                         sh """
                            git tag ${tagName}
-                           curl --header "PRIVATE-TOKEN: ${TOKEN}" --request POST "https://bbpos.me/api/v4/projects/${gitLabProjectId}/releases" --data ${releaseParameter}
+                           curl --header "PRIVATE-TOKEN: ${TOKEN}" --request POST "https://bbpos.me/api/v4/projects/${GITLAB_PROJECT_ID}/releases" --data ${releaseParameter}
                         """
                     }
                 }
