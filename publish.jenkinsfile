@@ -14,7 +14,7 @@ pipeline {
                             choice(
                                 choices: ['JMeter', 'Postman', 'None'],
                                 name: 'TEST_TOOL',
-                                defaultValue: 'none'
+                                defaultValue: 'None'
                             ),
                             string(
                                 defaultValue: "${targetVersion}",
