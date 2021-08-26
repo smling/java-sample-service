@@ -17,10 +17,12 @@ pipeline {
                             ),
                             string(
                                 name: 'BUILD_VERSION_NUMBER',
+                                defaultValue: "${targetVersion}"
                                 trim: true
                             ),
                             string(
                                 name: 'ECR_VERSION_NUMBER',
+                                defaultValue: "${targetVersion}"
                                 trim: true
                             ),
                             string(
