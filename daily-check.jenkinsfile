@@ -30,7 +30,7 @@ pipeline {
                         echo getCodeArtifactTokenCommand
                         buildCommand="${tool 'gradle-7.0.2'}/gradle clean build -x test javadoc"
                         sh """
-                        ${getCodeArtifactTokenCommand}
+                        export CODEARTIFACT_AUTH_TOKEN=`${AWS_CLI_HOME}bin/aws codeartifact get-authorization-token --domain d-sg-2 --domain-owner 440509023570 --query authorizationToken --output text`
                         ${buildCommand}
                         """
                     }
