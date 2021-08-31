@@ -96,7 +96,6 @@ pipeline {
                             ${AWS_CLI_HOME}bin/aws ecr describe-images --repository-name ${AWS_ECR_REPOSITORY_NAME} | jq '.imageDetails|=sort_by(.imagePushedAt) |.[] |.[-1:] | .[] | .imageScanFindingsSummary.findingSeverityCounts'
                             """
                         }
-                        ,
                     }
                 }
             }
