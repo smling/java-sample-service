@@ -8,6 +8,15 @@ pipeline {
     }
     stages {
         stage('Initial') {
+            properties([
+                parameters([
+                    string(
+                        name: 'AWS_ECR_REPOSITORY_NAME',
+                        defaultValue: "	sample-service",
+                        trim: true
+                    )
+                ])
+            ])
             steps {
                 script { 
                     getCodeArtifactTokenCommand="export CODEARTIFACT_AUTH_TOKEN=`${AWS_CLI_HOME}bin/aws codeartifact get-authorization-token --domain d-sg-2 --domain-owner 440509023570 --query authorizationToken --output text`"
@@ -76,6 +85,13 @@ pipeline {
                             -f "ALL"
                             --prettyPrint''', odcInstallation: 'dependency-check-6.0.3'
                         dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+                    }
+                }
+                stage('ECR Image Vulnerability Scan') {
+                    steps {
+                        sh """
+                        ${AWS_CLI_HOME}bin/aws ecr describe-images --repository-name ${AWS_ECR_REPOSITORY_NAME} | jq '.imageDetails|=sort_by(.imagePushedAt) |.[] |.[-1:] | .[] | .imageScanFindingsSummary.findingSeverityCounts'
+                        """
                     }
                 }
             }
