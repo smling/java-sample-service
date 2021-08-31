@@ -10,7 +10,6 @@ pipeline {
         stage('Initial') {
             steps {
                 script {
-                    getCodeArtifactTokenCommand="export CODEARTIFACT_AUTH_TOKEN=`${AWS_CLI_HOME}bin/aws codeartifact get-authorization-token --domain d-sg-2 --domain-owner 440509023570 --query authorizationToken --output text`"
                     properties([
                         parameters([
                             string(
@@ -28,6 +27,7 @@ pipeline {
                 withEnv(["JAVA_HOME=${ tool 'jdk_11.0.11.0.9-1.el7_9' }"]) {
                     script {
                         getCodeArtifactTokenCommand="export CODEARTIFACT_AUTH_TOKEN=`${AWS_CLI_HOME}bin/aws codeartifact get-authorization-token --domain d-sg-2 --domain-owner 440509023570 --query authorizationToken --output text`"
+                        echo getCodeArtifactTokenCommand
                         buildCommand="${tool 'gradle-7.0.2'}/gradle clean build -x test javadoc"
                         sh """
                         ${getCodeArtifactTokenCommand}
