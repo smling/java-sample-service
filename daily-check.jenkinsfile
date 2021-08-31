@@ -95,9 +95,6 @@ pipeline {
                                 echo "${findingSeverity}"
                                 currentBuild.result = 'FAILURE'
                             }
-                            sh """
-                            echo ${findingSeverity}
-                            """
                         }
                     }
                 }
