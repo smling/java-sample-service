@@ -49,7 +49,9 @@ pipeline {
                         ${getCodeArtifactTokenCommand}
                         ${unitTestCommand}
                         """
-                    } finally {
+                    } catch {
+                         unstable "Error found in unit test."
+                    }finally {
                         junit "build/test-results/test/*.xml"
                     }
     		    }
@@ -92,7 +94,7 @@ pipeline {
                         script {
                             findingSeverity = sh([script: "${AWS_CLI_HOME}bin/aws ecr describe-images --repository-name ${AWS_ECR_REPOSITORY_NAME} | jq '.imageDetails|=sort_by(.imagePushedAt) |.[] |.[-1:] | .[] | .imageScanFindingsSummary.findingSeverityCounts'", returnStdout: true]).trim()
                             if(findingSeverity!="{}") {
-                                unstable "Failure status found. Response: ${findingSeverity}"
+                                unstable "Failure status found. Summary: ${findingSeverity}"
                             }
                         }
                     }
