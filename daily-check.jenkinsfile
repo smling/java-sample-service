@@ -49,7 +49,7 @@ pipeline {
                         ${getCodeArtifactTokenCommand}
                         ${unitTestCommand}
                         """
-                    } catch {
+                    } catch(Exception e) {
                          unstable "Error found in unit test."
                     }finally {
                         junit "build/test-results/test/*.xml"
