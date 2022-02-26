@@ -21,10 +21,6 @@ spec:
         prometheus.io/scrape: "true"
         prometheus.io/path: "/actuator/prometheus"
     spec:
-      volumes:
-        - name: efs
-          persistentVolumeClaim:
-            claimName: tms-efs-claim
       containers:
         - name: sample-service
           image: sample-service-0.0.1
