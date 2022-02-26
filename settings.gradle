@@ -1,10 +1,1 @@
 rootProject.name = 'sample-service'
-exec {
-    boolean isDev = System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')
-    if(isDev){
-        commandLine = ["${workingDir}\\token.bat"]
-    }
-    else{
-        commandLine 'echo'
-    }
-}

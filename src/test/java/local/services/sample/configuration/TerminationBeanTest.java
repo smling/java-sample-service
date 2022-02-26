@@ -1,4 +1,4 @@
-package local.service.sample.services.sample.configuration;
+package local.services.sample.configuration;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;

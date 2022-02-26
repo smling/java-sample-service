@@ -50,8 +50,8 @@ pipeline {
                         ${unitTestCommand}
                         """
                     } catch(Exception e) {
-                         unstable "Error found in unit test."
-                    }finally {
+                         unstable "Error found in unit test. Message: "+e.getMessage()
+                    } finally {
                         junit "build/test-results/test/*.xml"
                     }
     		    }

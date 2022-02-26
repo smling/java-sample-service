@@ -12,16 +12,13 @@ It includes basic project folder structure, sample controller, DockerFile and re
 5. After files added in directory, `.gitkeep` can be removed;
 6. Update this file content to align with implemented service;
 
-# Build And Debug
-See snippet [Build and Debug](https://bbpos.me/tms/devops/java-service-template/-/snippets/4) for more details.
-
 # Employed Libraries
-|Library|Usage|
-|------|-----|
-|SpringBoot MVC|Core API. |
-|Spring Data| Connect database.
-|Spring Actuator| Health check|
-|Spring Doc| Open API / Swagger UI|
-|Log4j2|Logging|
-|Lombok| Getter / Setter / Builder|
-|JUnit 5|Unit Tests|
+| Library         | Usage                     |
+|-----------------|---------------------------|
+| SpringBoot MVC  | Core API.                 |
+| Spring Data     | Connect database.         |
+| Spring Actuator | Health check              |
+| Spring Doc      | Open API / Swagger UI     |
+| Log4j2          | Logging                   |
+| Lombok          | Getter / Setter / Builder |
+| JUnit 5         | Unit Tests                |

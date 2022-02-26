@@ -1,4 +1,4 @@
-package local.service.sample.services.sample.health.metrics;
+package local.services.sample.health.metrics;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import org.junit.jupiter.api.Assertions;

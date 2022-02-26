@@ -1,4 +1,4 @@
-package local.service.sample;
+package local.services.sample;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

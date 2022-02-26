@@ -1,7 +1,7 @@
-package local.service.sample.services.sample.handlers;
+package local.services.sample.handlers;
 
-import com.bbpos.tms2.libs.web.exceptions.BaseWebServiceRuntimeException;
-import local.service.sample.services.sample.exceptions.SpecificKeywordException;
+import local.services.sample.exceptions.BaseWebServiceRuntimeException;
+import local.services.sample.exceptions.SpecificKeywordException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInstance;
@@ -31,7 +31,7 @@ class ServiceExceptionHandlerTest {
     @MethodSource("specificKeywordExceptionTestSuccessData")
     void specificKeywordExceptionTest(BaseWebServiceRuntimeException exception) {
         Assertions.assertDoesNotThrow(()->{
-            serviceExceptionHandler.specificKeywordException(exception, httpServletRequest);
+            serviceExceptionHandler.specificKeywordException(exception);
         });
     }
 

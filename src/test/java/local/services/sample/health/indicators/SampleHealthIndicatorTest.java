@@ -1,4 +1,4 @@
-package local.service.sample.services.sample.health.indicators;
+package local.services.sample.health.indicators;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

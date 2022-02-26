@@ -1,4 +1,4 @@
-package local.service.sample.services.sample.configuration;
+package local.services.sample.configuration;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

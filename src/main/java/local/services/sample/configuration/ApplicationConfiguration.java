@@ -1,4 +1,4 @@
-package local.service.sample.services.sample.configuration;
+package local.services.sample.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

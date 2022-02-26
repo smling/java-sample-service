@@ -1,7 +1,6 @@
-package local.service.sample.services.sample.services;
+package local.services.sample.services;
 
-import com.bbpos.tms2.libs.web.v1.dto.CommandResponse;
-import local.service.sample.services.sample.exceptions.SpecificKeywordException;
+import local.services.sample.exceptions.SpecificKeywordException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;

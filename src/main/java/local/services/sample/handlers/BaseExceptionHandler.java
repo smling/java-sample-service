@@ -1,4 +1,4 @@
-package local.service.sample.services.sample.handlers;
+package local.services.sample.handlers;
 
 public class BaseExceptionHandler {
 

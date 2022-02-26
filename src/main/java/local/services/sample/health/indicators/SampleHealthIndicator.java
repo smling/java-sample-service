@@ -1,4 +1,4 @@
-package local.service.sample.services.sample.health.indicators;
+package local.services.sample.health.indicators;
 
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;

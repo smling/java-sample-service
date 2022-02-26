@@ -1,4 +1,4 @@
-package local.service.sample.services.sample.exceptions;
+package local.services.sample.exceptions;
 
 /**
  * Specific keyword exception.

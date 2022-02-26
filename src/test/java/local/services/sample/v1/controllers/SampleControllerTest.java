@@ -1,7 +1,7 @@
-package local.service.sample.services.sample.v1.controllers;
+package local.services.sample.v1.controllers;
 
-import com.bbpos.tms2.libs.web.v1.dto.BaseResponse;
-import local.service.sample.services.sample.services.SampleService;
+import local.services.sample.Bases.BaseResponse;
+import local.services.sample.services.SampleService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

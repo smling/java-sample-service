@@ -1,4 +1,4 @@
-package local.service.sample.services.sample.configuration;
+package local.services.sample.configuration;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
