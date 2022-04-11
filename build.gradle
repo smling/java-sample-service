@@ -44,9 +44,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
-	implementation 'org.springdoc:springdoc-openapi-ui:1+'
-	implementation 'org.springdoc:springdoc-openapi-webmvc-core:1+'
-	implementation 'commons-configuration:commons-configuration:1+'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
+	implementation 'org.springdoc:springdoc-openapi-webmvc-core:1.6.6'
+	implementation 'commons-configuration:commons-configuration:1.10'
 
 
 	compileOnly 'org.projectlombok:lombok'
@@ -56,7 +56,7 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.mockito:mockito-junit-jupiter:4+'
+	testImplementation 'org.mockito:mockito-junit-jupiter:4.3.1'
 }
 
 configurations {

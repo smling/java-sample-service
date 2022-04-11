@@ -9,9 +9,6 @@ public abstract class BaseWebServiceRuntimeException extends RuntimeException {
             throw new IllegalArgumentException("Message could not be null or empty.");
     }
 
-    public BaseWebServiceRuntimeException(Exception exception) {
-        super(exception);
-    }
 
     public BaseWebServiceRuntimeException(String message, Exception exception) {
         super(message, exception);

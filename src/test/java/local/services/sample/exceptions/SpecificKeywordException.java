@@ -1,6 +1,7 @@
 package local.services.sample.exceptions;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -28,5 +29,11 @@ class SpecificKeywordExceptionTest {
                 Arguments.arguments("message", true),
                 Arguments.arguments("", false)
         );
+    }
+
+    @Test
+    void getErrorCode() {
+        SpecificKeywordException exceptionWithInnerException = new SpecificKeywordException("message", new RuntimeException());
+        Assertions.assertNotNull(exceptionWithInnerException.getErrorCode());
     }
 }
