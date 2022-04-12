@@ -38,10 +38,5 @@ jobs:
     - name: Artifact reports
       uses: actions/upload-artifact@v3
       with:
-        name: artifact
+        name: artifact-reports
         path: build/reports
-    - name: Publish Unit Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
-      with:
-        files: "build/test-results/**/*.xml"
