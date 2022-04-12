@@ -3,8 +3,6 @@ package local.services.sample.services;
 import local.services.sample.exceptions.SpecificKeywordException;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * Sample service
  */
