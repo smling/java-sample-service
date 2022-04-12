@@ -1,6 +1,6 @@
 package local.services.sample.exceptions;
 
-import local.services.sample.Bases.BaseResponse;
+import local.services.sample.bases.BaseResponse;
 
 public class ErrorResponse extends BaseResponse {
 

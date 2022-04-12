@@ -1,6 +1,6 @@
 package local.services.sample.v1.controllers;
 
-import local.services.sample.Bases.BaseResponse;
+import local.services.sample.bases.BaseResponse;
 import local.services.sample.services.SampleService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;

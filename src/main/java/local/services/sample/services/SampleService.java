@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Service
 public class SampleService {
-    private HttpServletRequest request;
+    private final HttpServletRequest request;
 
     public SampleService(HttpServletRequest httpServletRequest) {
         this.request = httpServletRequest;
@@ -26,6 +26,6 @@ public class SampleService {
             throw new SpecificKeywordException(String.format("Keyword %s hit.", message));
         }
         String responseMessage = String.format("Server response: %s", message);
-        return new CommandResponse("0000", "Executed Success.", message);
+        return new CommandResponse("0000", "Executed Success.", responseMessage);
     }
 }
