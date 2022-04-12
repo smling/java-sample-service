@@ -18,16 +18,16 @@ import java.util.stream.Stream;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SampleControllerTest {
     private SampleController normalController;
-    private final HttpServletRequest mockedRequest = Mockito.mock(HttpServletRequest.class);
+
     @BeforeAll
     void beforeAll() {
-        normalController = new SampleController(new SampleService(mockedRequest));
+        normalController = new SampleController(new SampleService());
     }
 
     @Test
     void constructorTest() {
         Assertions.assertAll(()-> Assertions.assertDoesNotThrow(()-> {
-            SampleController sampleController = new SampleController(new SampleService(mockedRequest));
+            SampleController sampleController = new SampleController(new SampleService());
             Assertions.assertNotNull(sampleController);
         }));
     }

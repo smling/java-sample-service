@@ -16,10 +16,10 @@ import java.util.stream.Stream;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SampleServiceTest {
     private SampleService normalService;
-    private final HttpServletRequest mockedRequest = Mockito.mock(HttpServletRequest.class);
+
     @BeforeAll
     void beforeAll() {
-        normalService = new SampleService(mockedRequest);
+        normalService = new SampleService();
     }
 
     @ParameterizedTest()

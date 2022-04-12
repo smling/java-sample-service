@@ -10,11 +10,6 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Service
 public class SampleService {
-    private final HttpServletRequest request;
-
-    public SampleService(HttpServletRequest httpServletRequest) {
-        this.request = httpServletRequest;
-    }
 
     /**
      * Send back response.
