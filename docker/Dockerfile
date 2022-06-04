@@ -1,6 +1,6 @@
 ## Open JDK latest version.
 ## Reference: https://catalog.redhat.com/software/containers/ubi8/openjdk-11/5dd6a4b45a13461646f677f4?container-tabs=gti
-FROM ubi8/openjdk-17/1.11-2.1648459725
+FROM ubi8/openjdk-17/1.13-1.1653918216
 USER root
 
 ARG PROJECT_NAME=sample-service
